@@ -17,6 +17,7 @@
 #include "Jugador.h"
 
 #define ITERACIONES 100000
+#define ALPHA 0.3
 
 void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM], int requerido);
 double construccion(vector<Jugador> &jugadores, vector<int> &candidato, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]);

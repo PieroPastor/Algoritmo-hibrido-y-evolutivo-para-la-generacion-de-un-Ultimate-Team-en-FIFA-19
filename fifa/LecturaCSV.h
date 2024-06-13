@@ -15,7 +15,7 @@
 
 #include "Jugador.h"
 
-void leerJugadores(const char *nombre, vector<Jugador> &jugadores);
+void leerJugadores(const char *nombre, vector<Jugador> &jugadores, double presupuesto);
 char* leerCadena(ifstream &arch, int max, char tope);
 void leerMediasPosicion(Jugador &jugador, ifstream &arch);
 void cargarInformacion(Jugador &jugador, char *nomcad, char *naciocad, char *poscad, 

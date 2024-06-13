@@ -10,12 +10,11 @@
 string posiciones_meds[]={"LS","ST","RS","LW","LF","CF","RF","RW","LAM","CAM","RAM","LM","LCM",
               "CM","RCM","RM","LWB","LDM","CDM","RDM","RWB","LB","LCB","CB","RCB","RB"};
 
-void leerJugadores(const char *narch, vector<Jugador> &jugadores){
+void leerJugadores(const char *narch, vector<Jugador> &jugadores, double presupuesto){
     ifstream arch (narch, ios::in);
     if(not arch.is_open()){exit(1);}
     Jugador jugador;
     int id, edad, media, potencial, aux;
-    string nombre, nacionalidad, posicion, club;
     double valor, auxD;
     char car, *nomcad, *naciocad, *poscad, *clubcad;
     while(arch.get()!='\n'); //Limpia la cabecera
@@ -23,9 +22,7 @@ void leerJugadores(const char *narch, vector<Jugador> &jugadores){
         arch >> id;
         if(arch.eof()) break;
         arch.get();
-        if(id == 970){
-            cout << "sad";
-        }
+        if(id >= 13284) id -= 48; //Para el salto que hubo en los ids de datos
         arch >> aux >> car;
         nomcad = leerCadena(arch, 500, ',');
         arch >> edad >> car;
@@ -47,7 +44,7 @@ void leerJugadores(const char *narch, vector<Jugador> &jugadores){
         if(strcmp(poscad, "GK") != 0)leerMediasPosicion(jugador, arch);
         else while(arch.get() != '\n'); //Salta al siguiente jugador
         cargarInformacion(jugador, nomcad, naciocad, poscad, clubcad, valor, id, edad, media, potencial);
-        jugadores.push_back(jugador);
+        if(jugador.GetValor() < presupuesto)jugadores.push_back(jugador); //Solo guarda si será útil
     }
 }
 
