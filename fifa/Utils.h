@@ -21,9 +21,11 @@
 #include <cstring>
 #include <cmath>
 #include <algorithm>
+#include <climits>
 
 #define N_POS 26
 #define N_PLAYERS 11
+#define N_CHEM 10
 
 using namespace std;
 

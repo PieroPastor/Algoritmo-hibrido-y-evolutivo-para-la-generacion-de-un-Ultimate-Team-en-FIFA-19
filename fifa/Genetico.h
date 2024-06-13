@@ -13,25 +13,31 @@
 #ifndef GENETICO_H
 #define GENETICO_H
 
+#include "Utils.h"
 #include "Jugador.h"
+#include "GRASP.h"
 
 #define Tcasamiento 0.5
 #define Tmutacion 0.5
+#define Tmuerte 0.5
 #define Pcasamiento 0.4
 #define IND 10
+#define GENERACIONES 100
+#define POB_INICIAL 10
 
-vector<Jugador> genetico(vector<Jugador> &jugadores, double presupuesto, string *posiciones);
-double calcularFo(vector<Jugador> &equipo, string *posiciones);
-bool esAberracion(const vector<Jugador> &jugadores, double presupuesto);
-void calculaSupervivencia(vector<vector<Jugador>> &poblacion, vector<double> &supervivencia, string *posiciones);
+vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]);
+double calcularFo(vector<int> &equipo, vector<Jugador> &jugadores, string *posiciones, int chem_pos[][N_CHEM]);
+bool esAberracion(const vector<int> &equipo, const vector<Jugador> &jugadores, double presupuesto);
+void calculaSupervivencia(vector<vector<int>> &poblacion, vector<double> &supervivencia, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM], bool muerte=false);
 void cargaRuletas(vector<double> supervivencia, int *ruleta);
-void seleccion(vector<vector<Jugador>> &poblacion, vector<vector<Jugador>> &padres, string *posiciones);
-void mutacion(vector<vector<Jugador>> &poblacion, vector<vector<Jugador>> &padres, vector<Jugador> &jugadores);
-void generaHijo(vector<Jugador> &padre, vector<Jugador> &madre, vector<Jugador> &hijo);
-void casamiento(vector<vector<Jugador>> &poblacion, vector<vector<Jugador>> &padres);
-void eliminarAberraciones(vector<vector<Jugador>> &poblacion, double presupuesto);
-void eliminarClones(vector<vector<Jugador>> &poblacion);
-bool esUnico(vector<vector<Jugador>> &unicos, vector<Jugador> &equipo);
+void seleccion(vector<vector<int>> &poblacion, vector<vector<int>> &padres, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]);
+void mutacion(vector<vector<int>> &poblacion, vector<vector<int>> &padres, vector<Jugador> &jugadores);
+void generaHijo(vector<int> &padre, vector<int> &madre, vector<int> &hijo);
+void casamiento(vector<vector<int>> &poblacion, vector<vector<int>> &padres);
+void eliminarAberraciones(vector<vector<int>> &poblacion, vector<Jugador> &jugadores, double presupuesto);
+void eliminarClones(vector<vector<int>> &poblacion);
+bool esUnico(vector<vector<int>> &unicos, vector<int> &equipo);
+void disminuirPoblacion(vector<vector<int>> &poblacion, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]);
 
 #endif /* GENETICO_H */
 

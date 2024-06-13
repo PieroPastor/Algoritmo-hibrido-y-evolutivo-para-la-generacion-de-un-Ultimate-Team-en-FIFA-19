@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     double presupuesto=300; //En millones de dolares
     
     leerJugadores("data.csv", jugadores);
-    equipo = genetico(jugadores, presupuesto, f_4_3_3);
+    equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3);
     
     return 0;
 }

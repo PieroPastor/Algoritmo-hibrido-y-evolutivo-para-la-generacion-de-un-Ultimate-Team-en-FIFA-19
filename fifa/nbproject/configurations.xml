@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Formaciones.h</itemPath>
+      <itemPath>GRASP.h</itemPath>
       <itemPath>Genetico.h</itemPath>
       <itemPath>Jugador.h</itemPath>
       <itemPath>LecturaCSV.h</itemPath>
@@ -17,6 +18,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>GRASP.cpp</itemPath>
       <itemPath>Genetico.cpp</itemPath>
       <itemPath>Jugador.cpp</itemPath>
       <itemPath>LecturaCSV.cpp</itemPath>
@@ -48,6 +50,10 @@
         </ccTool>
       </compileType>
       <item path="Formaciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GRASP.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GRASP.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Genetico.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -88,6 +94,10 @@
         </asmTool>
       </compileType>
       <item path="Formaciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GRASP.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GRASP.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Genetico.cpp" ex="false" tool="1" flavor2="0">
       </item>
