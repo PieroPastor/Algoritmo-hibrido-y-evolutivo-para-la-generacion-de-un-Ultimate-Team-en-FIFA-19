@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>Equipo.h</itemPath>
       <itemPath>Formaciones.h</itemPath>
       <itemPath>Genetico.h</itemPath>
       <itemPath>Jugador.h</itemPath>
@@ -18,7 +17,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Equipo.cpp</itemPath>
       <itemPath>Genetico.cpp</itemPath>
       <itemPath>Jugador.cpp</itemPath>
       <itemPath>LecturaCSV.cpp</itemPath>
@@ -49,10 +47,6 @@
           <standard>11</standard>
         </ccTool>
       </compileType>
-      <item path="Equipo.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Equipo.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Formaciones.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Genetico.cpp" ex="false" tool="1" flavor2="0">
@@ -93,10 +87,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="Equipo.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Equipo.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Formaciones.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Genetico.cpp" ex="false" tool="1" flavor2="0">

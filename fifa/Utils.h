@@ -19,8 +19,11 @@
 #include <map>
 #include <fstream>
 #include <cstring>
+#include <cmath>
+#include <algorithm>
 
 #define N_POS 26
+#define N_PLAYERS 11
 
 using namespace std;
 

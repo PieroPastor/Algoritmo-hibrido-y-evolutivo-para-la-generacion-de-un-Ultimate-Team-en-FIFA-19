@@ -35,7 +35,9 @@ void leerJugadores(const char *narch, vector<Jugador> &jugadores){
         arch >> media >> car >> potencial >> car;
         clubcad = leerCadena(arch, 100, ',');
         while(arch.get() != ','); arch.get();
-        arch >> valor >> car >> car >> car >> auxD >> car >> car >> aux >> car;
+        arch >> valor >> car;
+        if(car == 'K') valor = valor/1000; //Si está en K y no M
+        arch >> car >> car >> auxD >> car >> car >> aux >> car;
         while(arch.get() != ',');
         arch >> aux >> car >> aux >> car >> aux >> car;
         while(arch.get() != ','); while(arch.get() != ','); while(arch.get() != ',');

@@ -23,9 +23,11 @@ using namespace std;
 //HAY UN SALTO EN 13284 PARA UN POSIBLE BORRADO
 
 int main(int argc, char** argv) {
-    vector<Jugador> jugadores;
+    vector<Jugador> jugadores, equipo;
+    double presupuesto=300; //En millones de dolares
     
     leerJugadores("data.csv", jugadores);
+    equipo = genetico(jugadores, presupuesto, f_4_3_3);
     
     return 0;
 }

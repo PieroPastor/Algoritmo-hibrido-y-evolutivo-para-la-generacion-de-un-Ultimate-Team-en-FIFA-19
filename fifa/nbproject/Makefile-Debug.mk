@@ -35,7 +35,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/Equipo.o \
 	${OBJECTDIR}/Genetico.o \
 	${OBJECTDIR}/Jugador.o \
 	${OBJECTDIR}/LecturaCSV.o \
@@ -65,11 +64,6 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fifa.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fifa ${OBJECTFILES} ${LDLIBSOPTIONS}
-
-${OBJECTDIR}/Equipo.o: Equipo.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Equipo.o Equipo.cpp
 
 ${OBJECTDIR}/Genetico.o: Genetico.cpp
 	${MKDIR} -p ${OBJECTDIR}
