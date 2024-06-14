@@ -23,6 +23,7 @@ void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, do
 double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candidato, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]);
 void actualizarMejores(vector<vector<int>> &poblacion, vector<int> &candidato, vector<double> &mejoresfo, double fo_parcial, int requerido);
 bool comparar(Jugador &a, Jugador &b);
+bool comparar_gk(Jugador &a, Jugador &b);
 bool sonIguales(vector<int> &pob, vector<int> &cand);
 int verifica(vector<Jugador> &jugadores, int rcl, string pos);
 bool notSelected(int id, vector<int> &candidato, int n);
