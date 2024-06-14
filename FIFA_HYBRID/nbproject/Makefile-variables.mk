@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=MinGW-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/MinGW-Windows
-CND_ARTIFACT_NAME_Debug=fifa
-CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW-Windows/fifa
+CND_ARTIFACT_NAME_Debug=fifa_hybrid
+CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW-Windows/fifa_hybrid
 CND_PACKAGE_DIR_Debug=dist/Debug/MinGW-Windows/package
-CND_PACKAGE_NAME_Debug=fifa.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/MinGW-Windows/package/fifa.tar
+CND_PACKAGE_NAME_Debug=fifahybrid.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/MinGW-Windows/package/fifahybrid.tar
 # Release configuration
 CND_PLATFORM_Release=MinGW-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/MinGW-Windows
-CND_ARTIFACT_NAME_Release=fifa
-CND_ARTIFACT_PATH_Release=dist/Release/MinGW-Windows/fifa
+CND_ARTIFACT_NAME_Release=fifa_hybrid
+CND_ARTIFACT_PATH_Release=dist/Release/MinGW-Windows/fifa_hybrid
 CND_PACKAGE_DIR_Release=dist/Release/MinGW-Windows/package
-CND_PACKAGE_NAME_Release=fifa.tar
-CND_PACKAGE_PATH_Release=dist/Release/MinGW-Windows/package/fifa.tar
+CND_PACKAGE_NAME_Release=fifahybrid.tar
+CND_PACKAGE_PATH_Release=dist/Release/MinGW-Windows/package/fifahybrid.tar
 #
 # include compiler specific variables
 #

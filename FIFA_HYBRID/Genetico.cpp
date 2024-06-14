@@ -7,7 +7,7 @@
 
 #include "Genetico.h"
 
-vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]){
+vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM], double &fitness){
     int indRet;
     vector<vector<int>> poblacion, padres;
     vector<Jugador> equipo;
@@ -15,8 +15,10 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
     //Llamará al GRASP para la poblacion inicial
     grasp(jugadores, poblacion, jugadores.size(), presupuesto, posiciones, chem_pos, POB_INICIAL);
     
-    for(int i=0; i < 5; i++){ //Ejecuta por tantas generaciones
+    for(int i=0; i < GENERACIONES; i++){ //Ejecuta por tantas generaciones
         srand(time(NULL));
+        if(poblacion.size() == 1) break; //Si solo queda uno manda a ese
+        if(poblacion.size() == 0) return *(new vector<Jugador>); //Retorna un vacio
         seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
         casamiento(poblacion, padres);
         mutacion(poblacion, padres, jugadores);
@@ -28,6 +30,7 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
     
     seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
     indRet = rand()%padres.size();
+    fitness = calcularFo(padres[indRet], jugadores, posiciones, chem_pos);
     for(int i=0; i < N_PLAYERS; i++) equipo.push_back(jugadores[padres[indRet][i]]);
     return equipo; //Retorna un padre aleatorio y se supone que por seleccion ahí puede estar el mejor
 }
@@ -112,27 +115,28 @@ void calculaSupervivencia(vector<vector<int>> &poblacion, vector<double> &superv
     }
 }
 
-void cargaRuletas(vector<double> supervivencia, int *ruleta){
+void cargaRuletas(vector<double> supervivencia, vector<int> &ruleta){
     int cont=0;
     for(int i=0; i < supervivencia.size(); i++){ 
         //Repite tantas veces como el fit sea para que el random de un índice y 
         //con ese se seleccione del arreglo ej: 
         //rand=5 -> [0, 0, 0, 0, 0,, 4, ,4, 4, 4, 4] -> selecciona el 0
         for(int j=0; j < supervivencia[i]; j++){
-            ruleta[cont] = i;
+            ruleta.push_back(i);
             cont++;
         }
     }
 }
 
 void seleccion(vector<vector<int>> &poblacion, vector<vector<int>> &padres, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]){
-    int ruleta[111]{}, npadres, ind, cont=0;
+    int npadres, ind, cont=0;
+    vector<int> ruleta;
     vector<double> supervivencia;
     calculaSupervivencia(poblacion, supervivencia, jugadores, n, posiciones, chem_pos, calcularFo); //Halla el porcentaje de supervivencia de cada individuo
     cargaRuletas(supervivencia, ruleta); //Consigue un arreglo para que el random tenga preferencia a elegir a los mejores que tienen mayor supervivencia
     npadres = round(poblacion.size()*Tcasamiento);
     while(true){
-        ind=rand()%111; //Con esto se saca un índice de la ruleta
+        ind=rand()%ruleta.size(); //Con esto se saca un índice de la ruleta
         padres.push_back(poblacion[ruleta[ind]]);
         cont++;
         if(cont >= npadres) break;
@@ -222,14 +226,14 @@ bool esUnico(vector<vector<int>> &unicos, vector<int> &equipo){
 }
 
 void disminuirPoblacion(vector<vector<int>> &poblacion, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]){
-    if(poblacion.size() == 1) return; // Para no quedarme sin poblacion
-    int ruleta[111]{}, nmuertos, ind, cont=0;
+    int nmuertos, ind, cont=0;
+    vector<int> ruleta;
     vector<double> muerte;
     calculaSupervivencia(poblacion, muerte, jugadores, n, posiciones, chem_pos, calcularOf); //Halla el porcentaje de supervivencia de cada individuo
     cargaRuletas(muerte, ruleta); //Consigue un arreglo para que el random tenga preferencia a elegir a los mejores que tienen mayor supervivencia
     nmuertos = round(poblacion.size()*Tmuerte);
     while(true){
-        ind=rand()%111; //Con esto se saca un índice de la ruleta
+        ind=rand()%ruleta.size(); //Con esto se saca un índice de la ruleta
         poblacion.erase(poblacion.begin()+ruleta[ind]); //Se baja a ese gen
         cont++; //Lo agrega para contar los muertos
         if(cont >= nmuertos) break;

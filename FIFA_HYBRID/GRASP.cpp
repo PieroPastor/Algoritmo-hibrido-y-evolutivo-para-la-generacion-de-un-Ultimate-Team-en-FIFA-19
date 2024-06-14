@@ -23,12 +23,12 @@ void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, do
         mediasPos[pos_name] = auxJugadores;
     }
     
-    for(int i=0; i < ITERACIONES; i++){
+    for(int i=0; i < ITERACIONES or poblacion.size() != requerido; i++){
         srand(time(NULL));
         fo_parcial = construccion(mediasPos, pob_parcial, n, presupuesto, posiciones, chem_pos);
         actualizarMejores(poblacion, pob_parcial, mejoresfo, fo_parcial, requerido);
         pob_parcial.clear();
-    }
+    }    
 }
 
 double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candidato, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]){
@@ -36,6 +36,7 @@ double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candid
     vector<int> borrados;
     //Falta analizar arqueros
     candidato.push_back(57); presupuesto -= 41.5;
+    
     for(int i=1; i < N_PLAYERS; i++){
         //Usara mediasPos[posiciones[i]; Esta ordenado segun la posicion
         beta = mediasPos[posiciones[i]].size(); //Vamos a basarnos en indices
@@ -58,16 +59,25 @@ double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candid
     return fitness;
 }
 
+bool sonIguales(vector<int> &pob, vector<int> &cand){
+    for(int i=0; i < pob.size(); i++)
+        if(pob[i] != cand[i]) return false;
+    return true;
+}
+
 void actualizarMejores(vector<vector<int>> &poblacion, vector<int> &candidato, vector<double> &mejoresfo, double fo_parcial, int requerido){
     double peor=INTMAX_MAX;
     int peor_fo;
     
     if(poblacion.size() < requerido){
+        for(int i=0; i < poblacion.size(); i++)
+            if(sonIguales(poblacion[i], candidato)) return; //No necesito iguales
         poblacion.push_back(candidato);
         mejoresfo.push_back(fo_parcial);
     }
     else{
         for(int i=0; i < requerido; i++){
+            if(sonIguales(poblacion[i], candidato)) return; //No necesito repetidos
             if(mejoresfo[i] < peor){
                 peor = mejoresfo[i];
                 peor_fo = i;
