@@ -19,7 +19,7 @@
 
 #define Tcasamiento 0.5
 #define Tmutacion 0.5
-#define Tmuerte 0.5
+#define Tmuerte 0.4 //No debe haber mas muertes que nacimientos
 #define Pcasamiento 0.4
 #define IND 10
 #define GENERACIONES 100
