@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     vector<Jugador> jugadores, equipo;
     double presupuesto=300; //En millones de dolares
     
-    leerJugadores("data.csv", jugadores, presupuesto);
+    leerJugadores("data_10percent.csv", jugadores, presupuesto);
     equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3);
     
     return 0;
