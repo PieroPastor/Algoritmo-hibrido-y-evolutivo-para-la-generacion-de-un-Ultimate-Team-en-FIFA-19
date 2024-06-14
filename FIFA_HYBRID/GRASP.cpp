@@ -17,26 +17,51 @@ void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, do
     map<string, vector<Jugador>> mediasPos;
 
     //Para ordenar según la posición actual "RW" por ejemplo y lo guarda en un map para no ordenar todo el tiempo
-    for(int i=0; i < N_PLAYERS; i++){
+    for(int i=1; i < N_PLAYERS; i++){
         pos_name = posiciones[i];
         sort(auxJugadores.begin(), auxJugadores.end(), comparar); 
         mediasPos[pos_name] = auxJugadores;
     }
     
+    sort(auxJugadores.begin(), auxJugadores.end(), comparar_gk); 
+    
+    for(int i=0; i < n; i++){
+        if(jugadores[i].GetPosicion().compare("GK") == 0) 
+            mediasPos["GK"].push_back(jugadores[i]); //Guarda los arqueros tambien ya estan ordenados por media
+    }
+    
     for(int i=0; i < ITERACIONES or poblacion.size() != requerido; i++){
+        cout << "RANDOM ";
         srand(time(NULL));
+        cout << "Iter: " << i << " ";
         fo_parcial = construccion(mediasPos, pob_parcial, n, presupuesto, posiciones, chem_pos);
         actualizarMejores(poblacion, pob_parcial, mejoresfo, fo_parcial, requerido);
         pob_parcial.clear();
-    }    
+        cout << "Termine todo " << endl;
+    } 
+    cout << "Comienzo gen" << endl;
 }
 
 double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candidato, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]){
     int beta, tau, maxrcl, indmax, inda, fitness=0;
     vector<int> borrados;
-    //Falta analizar arqueros
-    candidato.push_back(57); presupuesto -= 41.5;
     
+    //Análisis exclusivo de arqueros
+    while(true){
+        beta = mediasPos["GK"].size();
+        tau = 0;
+        maxrcl = beta - ALPHA*(beta-tau);
+        indmax = beta-maxrcl;
+        inda = (indmax>0)?rand()%indmax:0;
+        inda += maxrcl;
+        if(presupuesto >= mediasPos["GK"][inda].GetValor()){
+            presupuesto -= mediasPos["GK"][inda].GetValor();
+            candidato.push_back(mediasPos["GK"][inda].getId());
+            fitness += mediasPos["GK"][inda].getFitness("GK");
+            break;
+        }
+    }
+    cout << "Termine arqueros ";
     for(int i=1; i < N_PLAYERS; i++){
         //Usara mediasPos[posiciones[i]; Esta ordenado segun la posicion
         beta = mediasPos[posiciones[i]].size(); //Vamos a basarnos en indices
@@ -45,6 +70,9 @@ double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candid
         indmax = beta-maxrcl;
         inda = (indmax > 0)?rand()%indmax:0; //Si sale el indice 0 solo toma eso
         inda += maxrcl;
+        if(inda < 0 or inda > mediasPos[posiciones[i]].size()){
+            cout << "adsda";
+        }
         if(presupuesto >= mediasPos[posiciones[i]][inda].GetValor() and 
            notSelected(mediasPos[posiciones[i]][inda].getId(), borrados, borrados.size()) and
            mediasPos[posiciones[i]][inda].GetPosicion().compare("GK") != 0){
@@ -55,7 +83,7 @@ double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candid
         else i--; //Tiene que volver a analizar la posicion
         borrados.push_back(mediasPos[posiciones[i]][inda].getId()); //Lo borra pero para evitar mandar copias y mandar la direccion se usará un vector auxiliar
     }
-    
+    cout << "Termine jugadores ";
     return fitness;
 }
 
@@ -94,6 +122,14 @@ bool comparar(Jugador &a, Jugador &b){
     double fo_a=(double)(a.getMediaPos(pos_name)*a.GetPotencial())/
                 (double)(a.GetValor()*a.GetEdad());
     double fo_b=(double)(b.getMediaPos(pos_name)*b.GetPotencial())/
+                (double)(b.GetValor()*b.GetEdad());
+    return fo_a < fo_b;
+}
+
+bool comparar_gk(Jugador &a, Jugador &b){
+    double fo_a=(double)(a.GetMedia()*a.GetPotencial())/
+                (double)(a.GetValor()*a.GetEdad());
+    double fo_b=(double)(b.GetMedia()*b.GetPotencial())/
                 (double)(b.GetValor()*b.GetEdad());
     return fo_a < fo_b;
 }
