@@ -38,9 +38,7 @@ void leerJugadores(const char *narch, vector<Jugador> &jugadores, double presupu
         while(arch.get() != ',');
         arch >> aux >> car >> aux >> car >> aux >> car;
         while(arch.get() != ','); while(arch.get() != ','); while(arch.get() != ',');
-        poscad = leerCadena(arch, 5, ',');
-        cout << id << endl;
-        
+        poscad = leerCadena(arch, 5, ',');        
         if(strcmp(poscad, "GK") != 0)leerMediasPosicion(jugador, arch);
         else while(arch.get() != '\n'); //Salta al siguiente jugador
         cargarInformacion(jugador, nomcad, naciocad, poscad, clubcad, valor, id, edad, media, potencial);
