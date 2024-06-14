@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/file.cc to edit this template
  */
 
+#include <iostream>
+
 #include "Genetico.h"
 
 vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]){
@@ -12,6 +14,8 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
     
     //Llamará al GRASP para la poblacion inicial
     grasp(jugadores, poblacion, jugadores.size(), presupuesto, posiciones, chem_pos, POB_INICIAL);
+    
+    for(int i=0; i < 11; i++) cout << poblacion[0][i] << endl;
     
     for(int i=0; i < GENERACIONES; i++){ //Ejecuta por tantas generaciones
         seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
@@ -39,8 +43,8 @@ double calcularFo(vector<int> &equipo, vector<Jugador> &jugadores, string *posic
         fo_min += jugadores[equipo[i]].GetValor()*jugadores[equipo[i]].GetEdad();
     }
     //Si no coinciden en nada +60, si coinciden en club o nacionalidad +150, si coinciden en los dos 200. Se divide entre el total de relaciones
-    for(int i=0; i < N_POS; i++){
-        for(int j=0; j < N_POS; j++){
+    for(int i=0; i < N_CHEM; i++){
+        for(int j=0; j < N_CHEM; j++){
             if(chem_pos[i][j] != -1){
                 cant_relaciones++;
                 if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[chem_pos[i][j]].GetNacionalidad()) == 0 and
@@ -62,12 +66,13 @@ bool esAberracion(const vector<int> &equipo, const vector<Jugador> &jugadores, d
     double suma=0;
     for(int i=0; i < N_PLAYERS; i++){
         suma += jugadores[equipo[i]].GetValor();
+        if(jugadores[equipo[i]].GetPosicion().compare("GK") and i >= 1) return true; //No puede ser arquero los que van luego de 1
     }
     return suma > presupuesto or jugadores[equipo[0]].GetPosicion() != "GK"; //Si pasa el presupuesto o no hay arquero
 }
 
 void calculaSupervivencia(vector<vector<int>> &poblacion, vector<double> &supervivencia, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM], bool muerte){
-    int sumafo=0;
+    double sumafo=0;
     double fit;
     for(int i=0; i < poblacion.size(); i++) sumafo += calcularFo(poblacion[i], jugadores, posiciones, chem_pos);
     for(int i=0; i < poblacion.size(); i++){

@@ -40,6 +40,7 @@ public:
     string GetNombre() const;
     void setMediaPos(int media, string pos);
     int getMediaPos(string pos);
+    double getFitness(string pos);
 private:
     int id;
     string nombre;

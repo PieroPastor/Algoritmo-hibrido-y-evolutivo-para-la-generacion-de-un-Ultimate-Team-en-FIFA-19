@@ -16,6 +16,16 @@ Jugador::Jugador() {
 }
 
 Jugador::Jugador(const Jugador& orig) {
+    id = orig.id;
+    valor = orig.valor;
+    nombre = orig.nombre;
+    club = orig.club;
+    potencial = orig.potencial;
+    media = orig.media;
+    posicion = orig.posicion;
+    nacionalidad = orig.nacionalidad;
+    edad = orig.edad;
+    mediaPos = orig.mediaPos;
 }
 
 Jugador::~Jugador() {
@@ -101,3 +111,6 @@ int Jugador::getMediaPos(string pos) {
     return mediaPos[pos];
 }
 
+double Jugador::getFitness(string pos){
+    return (double)(mediaPos[pos]*potencial)/(double)(valor*edad);
+}
