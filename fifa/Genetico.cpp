@@ -17,6 +17,7 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
     
     for(int i=0; i < 5; i++){ //Ejecuta por tantas generaciones
         srand(time(NULL));
+        //Estoy matando mas de lo que creo, al final me quedo sin poblacion.
         seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
         casamiento(poblacion, padres);
         mutacion(poblacion, padres, jugadores);
