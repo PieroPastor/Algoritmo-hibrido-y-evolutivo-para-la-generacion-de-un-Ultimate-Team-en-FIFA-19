@@ -27,8 +27,9 @@
 
 vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]);
 double calcularFo(vector<int> &equipo, vector<Jugador> &jugadores, string *posiciones, int chem_pos[][N_CHEM]);
+double calcularOf(vector<int> &equipo, vector<Jugador> &jugadores, string *posiciones, int chem_pos[][N_CHEM]);
 bool esAberracion(const vector<int> &equipo, const vector<Jugador> &jugadores, double presupuesto);
-void calculaSupervivencia(vector<vector<int>> &poblacion, vector<double> &supervivencia, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM], bool muerte=false);
+void calculaSupervivencia(vector<vector<int>> &poblacion, vector<double> &supervivencia, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM], double (*calcular)(vector<int> &, vector<Jugador> &, string *, int [][N_CHEM]));
 void cargaRuletas(vector<double> supervivencia, int *ruleta);
 void seleccion(vector<vector<int>> &poblacion, vector<vector<int>> &padres, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]);
 void mutacion(vector<vector<int>> &poblacion, vector<vector<int>> &padres, vector<Jugador> &jugadores);

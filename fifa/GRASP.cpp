@@ -24,6 +24,7 @@ void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, do
     }
     
     for(int i=0; i < ITERACIONES; i++){
+        srand(time(NULL));
         fo_parcial = construccion(mediasPos, pob_parcial, n, presupuesto, posiciones, chem_pos);
         actualizarMejores(poblacion, pob_parcial, mejoresfo, fo_parcial, requerido);
         pob_parcial.clear();

@@ -22,6 +22,7 @@
 #include <cmath>
 #include <algorithm>
 #include <climits>
+#include <ctime>
 
 #define N_POS 26
 #define N_PLAYERS 11

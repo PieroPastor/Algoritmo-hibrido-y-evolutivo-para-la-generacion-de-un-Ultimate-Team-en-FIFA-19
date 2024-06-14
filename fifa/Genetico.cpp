@@ -15,9 +15,8 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
     //Llamará al GRASP para la poblacion inicial
     grasp(jugadores, poblacion, jugadores.size(), presupuesto, posiciones, chem_pos, POB_INICIAL);
     
-    for(int i=0; i < 11; i++) cout << poblacion[0][i] << endl;
-    
-    for(int i=0; i < GENERACIONES; i++){ //Ejecuta por tantas generaciones
+    for(int i=0; i < 5; i++){ //Ejecuta por tantas generaciones
+        srand(time(NULL));
         seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
         casamiento(poblacion, padres);
         mutacion(poblacion, padres, jugadores);
@@ -57,28 +56,59 @@ double calcularFo(vector<int> &equipo, vector<Jugador> &jugadores, string *posic
     }
     
     chem_parc /= cant_relaciones;
-    cant_relaciones = (cant_relaciones <= 100)?cant_relaciones:100; //Si supera el 100% se deja así
+    chem_parc = (chem_parc <= 100)?chem_parc:100; //Si supera el 100% se deja así
     
-    return (fo_max*cant_relaciones)/fo_min;
+    return (fo_max*chem_parc)/fo_min;
+}
+
+double calcularOf(vector<int> &equipo, vector<Jugador> &jugadores, string *posiciones, int chem_pos[][N_CHEM]){
+    double fo_min=jugadores[equipo[0]].GetMedia()*jugadores[equipo[0]].GetPotencial(), //El portero tiene una media estatica
+           fo_max=jugadores[equipo[0]].GetValor()*jugadores[equipo[0]].GetEdad(),
+           chem_parc=0, cant_relaciones=0;
+    
+    for(int i=1; i < N_PLAYERS; i++){
+        fo_min += jugadores[equipo[i]].getMediaPos(posiciones[i])*jugadores[equipo[i]].GetPotencial(); //Para tener su media en su posicion que le toco
+        fo_max += jugadores[equipo[i]].GetValor()*jugadores[equipo[i]].GetEdad();
+    }
+    //Si no coinciden en nada +60, si coinciden en club o nacionalidad +150, si coinciden en los dos 200. Se divide entre el total de relaciones
+    for(int i=0; i < N_CHEM; i++){
+        for(int j=0; j < N_CHEM; j++){
+            if(chem_pos[i][j] != -1){
+                cant_relaciones++;
+                if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[chem_pos[i][j]].GetNacionalidad()) == 0 and
+                   jugadores[equipo[i]].GetClub().compare(jugadores[chem_pos[i][j]].GetClub()) == 0) chem_parc += 200;
+                else if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[chem_pos[i][j]].GetNacionalidad()) == 0 or
+                        jugadores[equipo[i]].GetClub().compare(jugadores[chem_pos[i][j]].GetClub()) == 0) chem_parc += 100;
+                else chem_parc += 60;
+            }else break;
+        }
+    }
+    
+    chem_parc /= cant_relaciones;
+    chem_parc = (chem_parc <= 100)?chem_parc:100; //Si supera el 100% se deja así
+    
+    return (fo_max)/(fo_min*chem_parc);
 }
 
 bool esAberracion(const vector<int> &equipo, const vector<Jugador> &jugadores, double presupuesto){
     double suma=0;
     for(int i=0; i < N_PLAYERS; i++){
+        if(equipo[i] < 0 or equipo[i] >= jugadores.size()) return true;
+        for(int j=0; j < i; j++)
+            if(equipo[i] == equipo[j]) return true; //No pueden haber jugadores repetidos
         suma += jugadores[equipo[i]].GetValor();
-        if(jugadores[equipo[i]].GetPosicion().compare("GK") and i >= 1) return true; //No puede ser arquero los que van luego de 1
+        if(jugadores[equipo[i]].GetPosicion().compare("GK") == 0 and i >= 1) return true; //No puede ser arquero los que van luego de 1
     }
     return suma > presupuesto or jugadores[equipo[0]].GetPosicion() != "GK"; //Si pasa el presupuesto o no hay arquero
 }
 
-void calculaSupervivencia(vector<vector<int>> &poblacion, vector<double> &supervivencia, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM], bool muerte){
+void calculaSupervivencia(vector<vector<int>> &poblacion, vector<double> &supervivencia, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM], double (*calcular)(vector<int> &, vector<Jugador> &, string *, int [][N_CHEM])){
     double sumafo=0;
     double fit;
-    for(int i=0; i < poblacion.size(); i++) sumafo += calcularFo(poblacion[i], jugadores, posiciones, chem_pos);
+    for(int i=0; i < poblacion.size(); i++) sumafo += calcular(poblacion[i], jugadores, posiciones, chem_pos);
     for(int i=0; i < poblacion.size(); i++){
-        fit=round(100*calcularFo(poblacion[i], jugadores, posiciones, chem_pos)/sumafo); //Multiplica por 100 para ese porcentaje volverlo cantidad y se redondea
-        if(!muerte) supervivencia.push_back(fit);
-        else supervivencia.push_back(100-fit); //Para bajarme a los peores (lo opuesto)
+        fit=round(100*calcular(poblacion[i], jugadores, posiciones, chem_pos)/sumafo); //Multiplica por 100 para ese porcentaje volverlo cantidad y se redondea
+        supervivencia.push_back(fit);
     }
 }
 
@@ -96,13 +126,13 @@ void cargaRuletas(vector<double> supervivencia, int *ruleta){
 }
 
 void seleccion(vector<vector<int>> &poblacion, vector<vector<int>> &padres, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]){
-    int ruleta[100]{}, npadres, ind, cont=0;
+    int ruleta[111]{}, npadres, ind, cont=0;
     vector<double> supervivencia;
-    calculaSupervivencia(poblacion, supervivencia, jugadores, n, posiciones, chem_pos); //Halla el porcentaje de supervivencia de cada individuo
+    calculaSupervivencia(poblacion, supervivencia, jugadores, n, posiciones, chem_pos, calcularFo); //Halla el porcentaje de supervivencia de cada individuo
     cargaRuletas(supervivencia, ruleta); //Consigue un arreglo para que el random tenga preferencia a elegir a los mejores que tienen mayor supervivencia
     npadres = round(poblacion.size()*Tcasamiento);
     while(true){
-        ind=rand()%100; //Con esto se saca un índice de la ruleta
+        ind=rand()%111; //Con esto se saca un índice de la ruleta
         padres.push_back(poblacion[ruleta[ind]]);
         cont++;
         if(cont >= npadres) break;
@@ -164,10 +194,9 @@ void eliminarAberraciones(vector<vector<int>> &poblacion, vector<Jugador> &jugad
 }
 
 void eliminarClones(vector<vector<int>> &poblacion){
-    int n=poblacion.size();
     vector<vector<int>> unicos;
     
-    for(int i=0; i < n; i++){
+    for(int i=0; i < poblacion.size(); i++){
         if(esUnico(unicos, poblacion[i])) unicos.push_back(poblacion[i]);
         else{
             poblacion.erase(poblacion.begin()+i);
@@ -180,10 +209,10 @@ bool esUnico(vector<vector<int>> &unicos, vector<int> &equipo){
     int n=unicos.size(), flag;
     
     for(int i=0; i < n; i++){
-        flag = true;
+        flag = false;
         for(int j=0; j < N_PLAYERS; j++){
             if(equipo[j] != unicos[i][j]){
-                flag = false;
+                flag = true;
                 break;
             }
         }
@@ -193,14 +222,14 @@ bool esUnico(vector<vector<int>> &unicos, vector<int> &equipo){
 }
 
 void disminuirPoblacion(vector<vector<int>> &poblacion, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]){
-    int ruleta[100]{}, nmuertos, ind, cont=0;
+    int ruleta[111]{}, nmuertos, ind, cont=0;
     vector<double> muerte;
-    calculaSupervivencia(poblacion, muerte, jugadores, n, posiciones, chem_pos, true); //Halla el porcentaje de supervivencia de cada individuo
+    calculaSupervivencia(poblacion, muerte, jugadores, n, posiciones, chem_pos, calcularOf); //Halla el porcentaje de supervivencia de cada individuo
     cargaRuletas(muerte, ruleta); //Consigue un arreglo para que el random tenga preferencia a elegir a los mejores que tienen mayor supervivencia
     nmuertos = round(poblacion.size()*Tmuerte);
     while(true){
-        ind=rand()%100; //Con esto se saca un índice de la ruleta
-        poblacion.erase(poblacion.begin()+ind); //Se baja a ese gen
+        ind=rand()%111; //Con esto se saca un índice de la ruleta
+        poblacion.erase(poblacion.begin()+ruleta[ind]); //Se baja a ese gen
         cont++; //Lo agrega para contar los muertos
         if(cont >= nmuertos) break;
     }
