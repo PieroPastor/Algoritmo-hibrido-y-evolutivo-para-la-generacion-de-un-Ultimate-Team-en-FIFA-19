@@ -112,5 +112,6 @@ int Jugador::getMediaPos(string pos) {
 }
 
 double Jugador::getFitness(string pos){
+    if(pos.compare("GK") == 0)return (double)(media*potencial)/(double)(valor*edad);
     return (double)(mediaPos[pos]*potencial)/(double)(valor*edad);
 }
