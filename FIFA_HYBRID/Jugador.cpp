@@ -36,7 +36,7 @@ void Jugador::setId(int id){
 }
 
 int Jugador::getId(){
-    return id;
+    return this->id;
 }
 
 void Jugador::SetValor(double valor) {

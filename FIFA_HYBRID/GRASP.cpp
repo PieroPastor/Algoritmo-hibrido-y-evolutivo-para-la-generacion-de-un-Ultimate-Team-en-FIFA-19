@@ -30,7 +30,7 @@ void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, do
             mediasPos["GK"].push_back(jugadores[i]); //Guarda los arqueros tambien ya estan ordenados por media
     }
     
-    for(int i=0; i < ITERACIONES or poblacion.size() != requerido; i++){
+    for(int i=0; i < ITERACIONES; i++){
         cout << "RANDOM ";
         srand(time(NULL));
         cout << "Iter: " << i << " ";
@@ -70,14 +70,14 @@ double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candid
         indmax = beta-maxrcl;
         inda = (indmax > 0)?rand()%indmax:0; //Si sale el indice 0 solo toma eso
         inda += maxrcl;
-        if(inda < 0 or inda > mediasPos[posiciones[i]].size()){
+        if(inda < 0 or inda > mediasPos[posiciones[i]].size() or (&mediasPos[posiciones[i]][inda]) == nullptr){
             cout << "adsda";
         }
         if(presupuesto >= mediasPos[posiciones[i]][inda].GetValor() and 
-           notSelected(mediasPos[posiciones[i]][inda].getId(), borrados, borrados.size()) and
+           notSelected(mediasPos[posiciones[i]][inda].GetId(posiciones[i], inda), borrados, borrados.size()) and
            mediasPos[posiciones[i]][inda].GetPosicion().compare("GK") != 0){
             presupuesto -= mediasPos[posiciones[i]][inda].GetValor();
-            candidato.push_back(mediasPos[posiciones[i]][inda].getId());
+            candidato.push_back(mediasPos[posiciones[i]][inda].GetId(posiciones[i], inda));
             fitness += mediasPos[posiciones[i]][inda].getFitness(posiciones[i]);
         }
         else i--; //Tiene que volver a analizar la posicion

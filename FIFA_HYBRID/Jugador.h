@@ -22,6 +22,9 @@ public:
     virtual ~Jugador();
     void setId(int id);
     int getId();
+    int GetId(string pos, int indice){
+        return id;
+    }
     void SetValor(double valor);
     double GetValor() const;
     void SetClub(string club);
