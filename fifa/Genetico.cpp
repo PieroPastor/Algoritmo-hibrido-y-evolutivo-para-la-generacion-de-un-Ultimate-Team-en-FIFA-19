@@ -17,7 +17,6 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
     
     for(int i=0; i < 5; i++){ //Ejecuta por tantas generaciones
         srand(time(NULL));
-        //Estoy matando mas de lo que creo, al final me quedo sin poblacion.
         seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
         casamiento(poblacion, padres);
         mutacion(poblacion, padres, jugadores);
@@ -223,6 +222,7 @@ bool esUnico(vector<vector<int>> &unicos, vector<int> &equipo){
 }
 
 void disminuirPoblacion(vector<vector<int>> &poblacion, vector<Jugador> &jugadores, int n, string *posiciones, int chem_pos[][N_CHEM]){
+    if(poblacion.size() == 1) return; // Para no quedarme sin poblacion
     int ruleta[111]{}, nmuertos, ind, cont=0;
     vector<double> muerte;
     calculaSupervivencia(poblacion, muerte, jugadores, n, posiciones, chem_pos, calcularOf); //Halla el porcentaje de supervivencia de cada individuo
