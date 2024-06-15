@@ -16,6 +16,18 @@ void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, do
     vector<Jugador> auxJugadores(jugadores);
     map<string, vector<Jugador>> mediasPos;
 
+    cargarCopias(mediasPos, auxJugadores, auxJugadores.size(), posiciones);
+    
+    for(int i=0; i < ITERACIONES; i++){
+        srand(time(NULL));
+        fo_parcial = construccion(mediasPos, pob_parcial, n, presupuesto, posiciones, chem_pos);
+        fo_parcial *= getChemistry(pob_parcial, jugadores, chem_pos);
+        actualizarMejores(poblacion, pob_parcial, mejoresfo, fo_parcial, requerido);
+        pob_parcial.clear();
+    } 
+}
+
+void cargarCopias(map<string, vector<Jugador>> &mediasPos, vector<Jugador> &auxJugadores, int n, string *posiciones){
     //Para ordenar según la posición actual "RW" por ejemplo y lo guarda en un map para no ordenar todo el tiempo
     for(int i=1; i < N_PLAYERS; i++){
         pos_name = posiciones[i];
@@ -26,17 +38,9 @@ void grasp(vector<Jugador> &jugadores, vector<vector<int>> &poblacion, int n, do
     sort(auxJugadores.begin(), auxJugadores.end(), comparar_gk); 
     
     for(int i=0; i < n; i++){
-        if(jugadores[i].GetPosicion().compare("GK") == 0) 
-            mediasPos["GK"].push_back(jugadores[i]); //Guarda los arqueros tambien ya estan ordenados por media
+        if(auxJugadores[i].GetPosicion().compare("GK") == 0) 
+            mediasPos["GK"].push_back(auxJugadores[i]); //Guarda los arqueros tambien ya estan ordenados por media
     }
-    
-    for(int i=0; i < ITERACIONES; i++){
-        srand(time(NULL));
-        fo_parcial = construccion(mediasPos, pob_parcial, n, presupuesto, posiciones, chem_pos);
-        fo_parcial *= getChemistry(pob_parcial, jugadores, chem_pos);
-        actualizarMejores(poblacion, pob_parcial, mejoresfo, fo_parcial, requerido);
-        pob_parcial.clear();
-    } 
 }
 
 double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candidato, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM]){
@@ -67,6 +71,7 @@ double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candid
         indmax = beta-maxrcl;
         inda = (indmax > 0)?rand()%indmax:0; //Si sale el indice 0 solo toma eso
         inda += maxrcl;
+        
         if(presupuesto >= mediasPos[posiciones[i]][inda].GetValor() and 
            notSelected(mediasPos[posiciones[i]][inda].getId(), borrados, borrados.size()) and
            mediasPos[posiciones[i]][inda].GetPosicion().compare("GK") != 0){
@@ -75,6 +80,7 @@ double construccion(map<string, vector<Jugador>> &mediasPos, vector<int> &candid
             fitness += mediasPos[posiciones[i]][inda].getFitness(posiciones[i]);
         }
         else i--; //Tiene que volver a analizar la posicion
+        
         borrados.push_back(mediasPos[posiciones[i]][inda].getId()); //Lo borra pero para evitar mandar copias y mandar la direccion se usará un vector auxiliar
     }
 
@@ -121,17 +127,17 @@ double getChemistry(vector<int> &equipo, vector<Jugador> &jugadores, int chem_po
         for(int j=0; j < N_CHEM; j++){
             if(chem_pos[i][j] != -1){
                 cant_relaciones++;
-                if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[chem_pos[i][j]].GetNacionalidad()) == 0 and
-                   jugadores[equipo[i]].GetClub().compare(jugadores[chem_pos[i][j]].GetClub()) == 0) chem_parc += 200;
-                else if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[chem_pos[i][j]].GetNacionalidad()) == 0 or
-                        jugadores[equipo[i]].GetClub().compare(jugadores[chem_pos[i][j]].GetClub()) == 0) chem_parc += 100;
+                if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[equipo[chem_pos[i][j]]].GetNacionalidad()) == 0 and
+                   jugadores[equipo[i]].GetClub().compare(jugadores[equipo[chem_pos[i][j]]].GetClub()) == 0) chem_parc += 200;
+                else if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[equipo[chem_pos[i][j]]].GetNacionalidad()) == 0 or
+                        jugadores[equipo[i]].GetClub().compare(jugadores[equipo[chem_pos[i][j]]].GetClub()) == 0) chem_parc += 100;
                 else chem_parc += 60;
             }else break;
         }
     }
     
-    chem_parc /= cant_relaciones;
-    chem_parc = (chem_parc <= 100)?chem_parc:100; //Si supera el 100% se deja así
+    chem_parc /= (cant_relaciones*100);
+    chem_parc = (chem_parc <= 1)?chem_parc:1; //Si supera el 100% se deja así
     
     return chem_parc;
 }

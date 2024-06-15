@@ -108,6 +108,7 @@ void Jugador::setMediaPos(int media, string pos) {
 }
 
 int Jugador::getMediaPos(string pos) {
+    if(posicion.compare("GK") == 0) return -1;
     return mediaPos[pos];
 }
 

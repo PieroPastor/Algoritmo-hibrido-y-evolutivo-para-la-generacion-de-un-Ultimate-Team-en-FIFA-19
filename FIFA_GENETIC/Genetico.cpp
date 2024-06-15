@@ -17,13 +17,13 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
 
     for(int i=0; i < GENERACIONES; i++){ //Ejecuta por tantas generaciones
         srand(time(NULL));
-        if(poblacion.size() == 1) break; //Si solo queda uno manda a ese
-        if(poblacion.size() == 0) return *(new vector<Jugador>); //Retorna un vacio
         seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
         casamiento(poblacion, padres);
         mutacion(poblacion, padres, jugadores);
         eliminarAberraciones(poblacion, jugadores, presupuesto);
         eliminarClones(poblacion);
+        if(poblacion.size() == 1) break; //Si solo queda uno manda a ese
+        if(poblacion.size() == 0) return *(new vector<Jugador>); //Retorna un vacio
         disminuirPoblacion(poblacion, jugadores, n, posiciones, chem_pos);
         padres.clear(); //Limpia los padres previos
     }
@@ -68,17 +68,17 @@ double calcularFo(vector<int> &equipo, vector<Jugador> &jugadores, string *posic
         for(int j=0; j < N_CHEM; j++){
             if(chem_pos[i][j] != -1){
                 cant_relaciones++;
-                if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[chem_pos[i][j]].GetNacionalidad()) == 0 and
-                   jugadores[equipo[i]].GetClub().compare(jugadores[chem_pos[i][j]].GetClub()) == 0) chem_parc += 200;
-                else if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[chem_pos[i][j]].GetNacionalidad()) == 0 or
-                        jugadores[equipo[i]].GetClub().compare(jugadores[chem_pos[i][j]].GetClub()) == 0) chem_parc += 100;
+                if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[equipo[chem_pos[i][j]]].GetNacionalidad()) == 0 and
+                   jugadores[equipo[i]].GetClub().compare(jugadores[equipo[chem_pos[i][j]]].GetClub()) == 0) chem_parc += 200;
+                else if(jugadores[equipo[i]].GetNacionalidad().compare(jugadores[equipo[chem_pos[i][j]]].GetNacionalidad()) == 0 or
+                        jugadores[equipo[i]].GetClub().compare(jugadores[equipo[chem_pos[i][j]]].GetClub()) == 0) chem_parc += 100;
                 else chem_parc += 60;
             }else break;
         }
     }
     
-    chem_parc /= cant_relaciones;
-    chem_parc = (chem_parc <= 100)?chem_parc:100; //Si supera el 100% se deja así
+    chem_parc /= (cant_relaciones*100);
+    chem_parc = (chem_parc <= 1)?chem_parc:1; //Si supera el 100% se deja así
     
     return (fo_max*chem_parc*per_max)/(fo_min*per_min);
 }
@@ -106,8 +106,8 @@ double calcularOf(vector<int> &equipo, vector<Jugador> &jugadores, string *posic
         }
     }
     
-    chem_parc /= cant_relaciones;
-    chem_parc = (chem_parc <= 100)?chem_parc:100; //Si supera el 100% se deja así
+    chem_parc /= (cant_relaciones*100);
+    chem_parc = (chem_parc <= 1)?chem_parc:1; //Si supera el 100% se deja así
     
     return (fo_max*per_min)/(fo_min*chem_parc*per_max);
 }

@@ -16,7 +16,9 @@
 #include "Utils.h"
 #include "Jugador.h"
 
-void imprimirResultado(vector<Jugador> &equipo, double fitness, string *formacion);
+void imprimirResultado(vector<Jugador> &equipo, double fitness, string *formacion, int chem_pos[][N_CHEM]);
+double getChemistry(vector<Jugador> &equipo, int chem_pos[][N_CHEM]);
+double hallarPromedio(vector<double> &resultados);
 
 #endif /* FUNCIONES_H */
 

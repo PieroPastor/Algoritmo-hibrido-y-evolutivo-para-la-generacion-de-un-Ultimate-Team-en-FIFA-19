@@ -25,12 +25,19 @@ using namespace std;
 
 int main(int argc, char** argv) {
     vector<Jugador> jugadores, equipo;
+    vector<double> resultados;
     double presupuesto=500, fitness; //En millones de dolares
     
     leerJugadores("data_300.csv", jugadores, presupuesto);
-    equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3, fitness);
     
-    imprimirResultado(equipo, fitness, f_4_3_3);
+    for(int i=0; i < 100; i++){
+        equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3, fitness);
+        resultados.push_back(fitness);
+    }
+    
+    //imprimirResultado(equipo, fitness, f_4_3_3, chem_4_3_3);
+    
+    cout << "Promedio Fitness: " << hallarPromedio(resultados);
     
     return 0;
 }

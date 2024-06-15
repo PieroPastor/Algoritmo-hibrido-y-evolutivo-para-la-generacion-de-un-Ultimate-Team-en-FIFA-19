@@ -18,11 +18,11 @@
 
 #define Tcasamiento 0.5
 #define Tmutacion 0.5
-#define Tmuerte 0.5 //No debe haber mas muertes que nacimientos
+#define Tmuerte 0.4 //No debe haber mas muertes que nacimientos
 #define Pcasamiento 0.4
-#define IND 10
+#define IND 100
 #define GENERACIONES 100
-#define POB_INICIAL 10
+#define POB_INICIAL 25
 
 vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, string *posiciones, int chem_pos[][N_CHEM], double &fitness);
 void generaPoblacionInicial(vector<vector<int>> &poblacion, vector<Jugador> &jugadores, int n, double presupuesto);
