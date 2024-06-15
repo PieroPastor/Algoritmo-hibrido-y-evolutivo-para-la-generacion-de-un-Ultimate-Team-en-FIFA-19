@@ -20,13 +20,15 @@
 #include <fstream>
 #include <cstring>
 #include <cmath>
-#include <algorithm>
+#include <iostream>
 #include <climits>
 #include <ctime>
 
 #define N_POS 26
 #define N_PLAYERS 11
 #define N_CHEM 10
+#define per_min 0.5
+#define per_max 1
 
 using namespace std;
 

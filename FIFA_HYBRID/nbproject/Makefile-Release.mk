@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Funciones.o \
 	${OBJECTDIR}/GRASP.o \
 	${OBJECTDIR}/Genetico.o \
 	${OBJECTDIR}/Jugador.o \
@@ -65,6 +66,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fifa_hybrid.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fifa_hybrid ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/Funciones.o: Funciones.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Funciones.o Funciones.cpp
 
 ${OBJECTDIR}/GRASP.o: GRASP.cpp
 	${MKDIR} -p ${OBJECTDIR}

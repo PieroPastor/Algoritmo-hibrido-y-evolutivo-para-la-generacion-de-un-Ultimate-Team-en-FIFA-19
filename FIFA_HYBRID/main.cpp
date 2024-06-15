@@ -17,6 +17,7 @@
 #include "LecturaCSV.h"
 #include "Formaciones.h"
 #include "Genetico.h"
+#include "Funciones.h"
 
 using namespace std;
 
@@ -29,11 +30,7 @@ int main(int argc, char** argv) {
     leerJugadores("data_300.csv", jugadores, presupuesto);
     equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3, fitness);
     
-    for(int i=0; i < N_PLAYERS; i++){
-        cout << equipo[i].GetNombre() << " | ";
-    }
-    
-    cout << endl << "Con Fitness: " << fitness;
+    imprimirResultado(equipo, fitness, f_4_3_3);
     
     return 0;
 }

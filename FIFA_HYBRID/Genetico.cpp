@@ -14,7 +14,7 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
     
     //Llamará al GRASP para la poblacion inicial
     grasp(jugadores, poblacion, jugadores.size(), presupuesto, posiciones, chem_pos, POB_INICIAL);
-    
+
     for(int i=0; i < GENERACIONES; i++){ //Ejecuta por tantas generaciones
         srand(time(NULL));
         if(poblacion.size() == 1) break; //Si solo queda uno manda a ese
@@ -61,7 +61,7 @@ double calcularFo(vector<int> &equipo, vector<Jugador> &jugadores, string *posic
     chem_parc /= cant_relaciones;
     chem_parc = (chem_parc <= 100)?chem_parc:100; //Si supera el 100% se deja así
     
-    return (fo_max*chem_parc)/fo_min;
+    return (fo_max*chem_parc*per_max)/(fo_min*per_min);
 }
 
 double calcularOf(vector<int> &equipo, vector<Jugador> &jugadores, string *posiciones, int chem_pos[][N_CHEM]){
@@ -90,7 +90,7 @@ double calcularOf(vector<int> &equipo, vector<Jugador> &jugadores, string *posic
     chem_parc /= cant_relaciones;
     chem_parc = (chem_parc <= 100)?chem_parc:100; //Si supera el 100% se deja así
     
-    return (fo_max)/(fo_min*chem_parc);
+    return (fo_max*per_min)/(fo_min*chem_parc*per_max);
 }
 
 bool esAberracion(const vector<int> &equipo, const vector<Jugador> &jugadores, double presupuesto){
