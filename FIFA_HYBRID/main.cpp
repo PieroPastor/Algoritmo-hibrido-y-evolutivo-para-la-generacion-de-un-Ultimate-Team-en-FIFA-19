@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     
     leerJugadores("data_300.csv", jugadores, presupuesto);
     
-    for(int i=0; i < 100; i++){
+    for(int i=0; i < 1000; i++){
         equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3, fitness);
         resultados.push_back(fitness);
     }
