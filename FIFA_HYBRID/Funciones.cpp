@@ -7,11 +7,13 @@
 
 void imprimirResultado(vector<Jugador> &equipo, double fitness, string *formacion, int chem_pos[][N_CHEM]){
     cout << equipo[0].GetNombre() << " - " << equipo[0].GetMedia()
-         << " - " << equipo[0].GetNacionalidad() << " - " << equipo[0].GetClub() << " | ";
+         << " - " << equipo[0].GetNacionalidad() << " - " << equipo[0].GetClub()
+         << " - " <<  equipo[0].GetPosicion() <<" | ";
     
     for(int i=1; i < N_PLAYERS; i++){
         cout << equipo[i].GetNombre() << " - " << equipo[i].getMediaPos(formacion[i]) 
-             << " - " << equipo[i].GetNacionalidad() << " - " << equipo[i].GetClub() << " | ";
+             << " - " << equipo[i].GetNacionalidad() << " - " << equipo[i].GetClub() 
+             << " - " <<  equipo[i].GetPosicion() <<" | ";
     }
 
     cout << endl << "Con Fitness: " << fitness;

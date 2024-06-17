@@ -27,8 +27,9 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
         disminuirPoblacion(poblacion, jugadores, n, posiciones, chem_pos);
         padres.clear(); //Limpia los padres previos
     }
-    
-    seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
+    padres.clear();
+    if(poblacion.size() > 1) seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
+    else padres.push_back(poblacion[0]);
     indRet = rand()%padres.size();
     fitness = calcularFo(padres[indRet], jugadores, posiciones, chem_pos);
     for(int i=0; i < N_PLAYERS; i++) equipo.push_back(jugadores[padres[indRet][i]]);

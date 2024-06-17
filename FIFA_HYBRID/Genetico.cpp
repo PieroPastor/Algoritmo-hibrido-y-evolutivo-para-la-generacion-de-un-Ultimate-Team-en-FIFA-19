@@ -27,8 +27,9 @@ vector<Jugador> genetico(vector<Jugador> &jugadores, int n, double presupuesto, 
         disminuirPoblacion(poblacion, jugadores, n, posiciones, chem_pos);
         padres.clear(); //Limpia los padres previos
     }
-    
-    seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
+    padres.clear();
+    if(poblacion.size() > 1) seleccion(poblacion, padres, jugadores, n, posiciones, chem_pos);
+    else padres.push_back(poblacion[0]);
     indRet = rand()%padres.size();
     fitness = calcularFo(padres[indRet], jugadores, posiciones, chem_pos);
     for(int i=0; i < N_PLAYERS; i++) equipo.push_back(jugadores[padres[indRet][i]]);
@@ -100,7 +101,7 @@ bool esAberracion(const vector<int> &equipo, const vector<Jugador> &jugadores, d
         for(int j=0; j < i; j++)
             if(equipo[i] == equipo[j]) return true; //No pueden haber jugadores repetidos
         suma += jugadores[equipo[i]].GetValor();
-        if(jugadores[equipo[i]].GetPosicion().compare("GK") == 0 and i >= 1) return true; //No puede ser arquero los que van luego de 1
+        if(i >= 1 and jugadores[equipo[i]].GetPosicion() == "GK") return true; //No puede ser arquero los que van luego de 1
     }
     return suma > presupuesto or jugadores[equipo[0]].GetPosicion() != "GK"; //Si pasa el presupuesto o no hay arquero
 }

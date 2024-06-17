@@ -29,13 +29,13 @@ int main(int argc, char** argv) {
     double presupuesto=500, fitness; //En millones de dolares
     
     leerJugadores("data_300.csv", jugadores, presupuesto);
-    
-    for(int i=0; i < 1000; i++){
+        
+    for(int i=0; i < 1; i++){
         equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3, fitness);
         resultados.push_back(fitness);
     }
     
-    //imprimirResultado(equipo, fitness, f_4_3_3, chem_4_3_3);
+    imprimirResultado(equipo, fitness, f_4_3_3, chem_4_3_3);
     
     cout << "Promedio Fitness: " << hallarPromedio(resultados);
     
