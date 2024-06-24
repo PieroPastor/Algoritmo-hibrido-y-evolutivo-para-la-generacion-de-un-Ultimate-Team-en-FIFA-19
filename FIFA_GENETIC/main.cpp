@@ -30,14 +30,14 @@ int main(int argc, char** argv) {
 
     leerJugadores("data_300.csv", jugadores, presupuesto);
     
-    for(int i=0; i < 1; i++){
+    for(int i=0; i < 100; i++){
         equipo = genetico(jugadores, jugadores.size(), presupuesto, f_4_3_3, chem_4_3_3, fitness);
         resultados.push_back(fitness);
     }
     
     //imprimirResultado(equipo, fitness, f_4_3_3, chem_4_3_3);
     
-    cout << "Promedio Fitness: " << hallarPromedio(resultados);
+    cout << "\nPromedio Fitness: " << hallarPromedio(resultados);
     
     return 0;
 }

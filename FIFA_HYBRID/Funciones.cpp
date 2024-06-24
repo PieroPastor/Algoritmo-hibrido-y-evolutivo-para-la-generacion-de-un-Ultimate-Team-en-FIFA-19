@@ -17,7 +17,7 @@ void imprimirResultado(vector<Jugador> &equipo, double fitness, string *formacio
     }
 
     cout << endl << "Con Fitness: " << fitness;
-    cout << endl << "Con Quimica: " << getChemistry(equipo, chem_pos);
+    cout << endl << "Con Quimica: " << getChemistry(equipo, chem_pos); 
 }
 
 double getChemistry(vector<Jugador> &equipo, int chem_pos[][N_CHEM]){
@@ -46,6 +46,11 @@ double getChemistry(vector<Jugador> &equipo, int chem_pos[][N_CHEM]){
 
 double hallarPromedio(vector<double> &resultados){
     double sum=0;
-    for(int i=0; i < resultados.size(); i++) sum += resultados[i];
+    ofstream arch("hibrido_r.csv", ios::out);
+	arch << resultados << endl;
+    for(int i=0; i < resultados.size(); i++){
+        sum += resultados[i];
+        arch << resultados[i] <<endl;
+    }
     return sum/resultados.size();
 }
