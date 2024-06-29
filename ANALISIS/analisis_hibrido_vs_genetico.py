@@ -9,6 +9,7 @@ Original file is located at
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Cargar los archivos CSV
 dfh = pd.read_csv('hibrido_r.csv')
@@ -41,10 +42,21 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-plt.figure(figsize=(10, 5))
-neodf.boxplot(column=['Hibrido', 'Genetico'])
+boxplot = neodf.boxplot(column=['Hibrido', 'Genetico'])
+
+# Calcular la media para cada columna
+mean_hibrido = neodf['Hibrido'].mean()
+mean_genetico = neodf['Genetico'].mean()
+
+# Añadir líneas de media al gráfico
+plt.plot([1, 1], [0, mean_hibrido], marker="_", color="purple", markersize=10)
+plt.plot([2, 2], [0, mean_genetico], marker="_", color="purple", markersize=10)
+
+# Configurar el gráfico
 plt.title('Comparación de Metaheurísticos - Box Plot')
 plt.ylabel('Fitness')
+
+# Mostrar el gráfico
 plt.show()
 
 plt.figure(figsize=(10, 5))
