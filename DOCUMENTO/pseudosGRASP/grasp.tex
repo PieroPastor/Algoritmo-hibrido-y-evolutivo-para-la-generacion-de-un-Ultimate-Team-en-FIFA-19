@@ -1,0 +1,37 @@
+\documentclass{article}
+% Paquetes adicionales
+\usepackage[utf8]{inputenc} % Codificación de caracteres
+\usepackage{amsmath} % Paquete para matemáticas
+\usepackage{graphicx} % Para incluir gráficos
+\usepackage{hyperref} % Para hipervínculos
+\usepackage[spanish]{babel}
+\usepackage{tabularx} % Paquete para tablas ajustables
+\usepackage{float} % Paquete para la opción H en tablas y figuras
+\usepackage[a4,top=2cm,bottom=2cm,left=1cm,right=1cm]{geometry}
+\usepackage{algorithm} % Paquete para algoritmos
+\usepackage{algpseudocode} % Paquete para pseudocódigo
+\usepackage{titlesec} % Paquete para ajustar espacios de secciones
+% Configuración de márgenes
+
+% Ajuste del espacio entre columnas
+% Ajuste del espacio entre columnas
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0.2\baselineskip}
+%Documento
+\begin{document}
+\floatname{algorithm}{Metaheurístico GRASP}
+\renewcommand{\thealgorithm}{}
+\begin{algorithm}
+    \caption{Algoritmo para elaborar la población inicial del híbrido}
+    \begin{algorithmic}[1]
+        \Procedure{GRASP}{$jugadores, poblacion, n, presupuesto, posiciones, quimica, requerido$} \Comment{Halla una población inicial aceptable}
+            \State $i \gets 0$
+            \While{$i \neq ITERACIONES$}
+                \State $foparcial \gets$ \Call{Construccion}{$mediasPosicion, pobParcial, n, presupuesto, posiciones, quimica$}
+                \State $foparcial \gets foparcial * $ \Call{HallarQuimica}{$pobParcial, jugadores, quimica$} \Comment{Halla la química de todo el equipo, ya que, la construcción no puede hacerlo por si sola}
+                \State \Call{ActualizarMejores}{$poblacion, pobParcial, mejoresFo, foParcial, requerido$} \Comment{Actualiza la población inicial con el nuevo individuo conseguido}
+                \State $i \gets i + 1$
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{document}

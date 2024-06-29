@@ -1,0 +1,42 @@
+\documentclass{article}
+% Paquetes adicionales
+\usepackage[utf8]{inputenc} % Codificación de caracteres
+\usepackage{amsmath} % Paquete para matemáticas
+\usepackage{graphicx} % Para incluir gráficos
+\usepackage{hyperref} % Para hipervínculos
+\usepackage[spanish]{babel}
+\usepackage{tabularx} % Paquete para tablas ajustables
+\usepackage{float} % Paquete para la opción H en tablas y figuras
+\usepackage[a4,top=2cm,bottom=2cm,left=1cm,right=1cm]{geometry}
+\usepackage{algorithm} % Paquete para algoritmos
+\usepackage{algpseudocode} % Paquete para pseudocódigo
+\usepackage{titlesec} % Paquete para ajustar espacios de secciones
+% Configuración de márgenes
+% Ajuste del espacio entre columnas
+% Ajuste del espacio entre columnas
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0.2\baselineskip}
+%Documento
+\begin{document}
+\floatname{algorithm}{Metaheurístico Híbrido}
+\renewcommand{\thealgorithm}{}
+\begin{algorithm}
+    \caption{Algoritmo para encontrar el mejor equipo en el videojuego FIFA 19} 
+    \begin{algorithmic}[1]
+        \Procedure{hibrido}{$jugadores, n, presupuesto, posiciones, quimica$} \Comment{Halla el mejor equipo en base al presupuesto}
+            \State \Call{GRASP}{$jugadores, poblacion, n, presupuesto, posiciones, quimica, POBINICIAL$}
+            \State $i \gets 0$
+            \While{$i \neq GENERACIONES \land tampoblacion > 1 $}
+                \State \Call{Seleccion}{$poblacion, padres, jugadores, n, posiciones, quimica$}
+                \State \Call{Casamiento}{$poblacion, padres$}
+                \State \Call{Mutacion}{$poblacion, padres, jugadores$}
+                \State \Call{EliminarAberraciones}{$poblacion, jugadores, presupuesto$}
+                \State \Call{EliminarClones}{$poblacion$}
+                \State \Call{DisminuirPoblacion}{$poblacion, jugadores, n, posiciones, quimica$}
+                \State $i = i+1$
+            \EndWhile
+            \State \Call{Seleccion}{$poblacion, padres, jugadores, n, posiciones, quimica$}
+            \State \textbf{return } \Call{Random}{$padres$} \Comment{Retorna el mejor equipo}
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{document}

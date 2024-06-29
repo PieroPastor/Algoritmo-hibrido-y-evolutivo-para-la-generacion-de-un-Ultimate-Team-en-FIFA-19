@@ -1,0 +1,68 @@
+\documentclass{article}
+% Paquetes adicionales
+\usepackage[utf8]{inputenc} % Codificación de caracteres
+\usepackage{amsmath} % Paquete para matemáticas
+\usepackage{graphicx} % Para incluir gráficos
+\usepackage{hyperref} % Para hipervínculos
+\usepackage[spanish]{babel}
+\usepackage{tabularx} % Paquete para tablas ajustables
+\usepackage{float} % Paquete para la opción H en tablas y figuras
+\usepackage{tikz}
+\usepackage{algorithm} % Paquete para algoritmos
+\usepackage{algpseudocode} % Paquete para pseudocódigo
+\usepackage[a4,top=2cm,bottom=2cm,left=3cm,right=3cm]{geometry}
+\usepackage{titlesec} % Paquete para ajustar espacios de secciones
+\usepackage{tabto}
+% Configuración de márgenes
+% Ajuste del espacio entre columnas
+% Ajuste del espacio entre columnas
+%Documento
+\begin{document}
+\State \textbf{G}{$: (\boldsymbol{\forall} \ i : 1 \leq i < n : Posicion(equipo[i]) \neq "GK" )$}
+\State $\{Pre: N = 11 \land equipo \neq \emptyset \ \land \ posiciones \neq \emptyset \ \land \ quimica \neq \emptyset \ \land \ Posicion(equipo[0]) = "GK" \land \ \textbf{G} \}$ 
+\State \textbf{proc }{$HallarFitness(\textbf{value} \ equipo : \textbf{array \ of}\ Equipo;$}
+\State \tabto{63} $\textbf{value} \ posiciones : \textbf{array \ of} \ string; $
+\State \tabto{63} $\textbf{value} \ quimica : \textbf{array \ of}\ \textbf{array \ of} \ integer);$
+\State \tabto{63} $\textbf{result} \ fitness : double);$
+\State \tabto{25} $fo\_max := Media(equipo[0]) \times Potencial(equipo[0])$
+\State \tabto{25} $fo\_min := Valor(equipo[0]) \times Edad(equipo[0])$
+\State \tabto{25} $i := 0$
+\State \tabto{25} $\{invariant: fo\_max > 0 \land fo\_min > 0\}$
+\State \tabto{25} $\{bound: N-1\}$
+\State \tabto{25} $\textbf{do}\ i < N \rightarrow fo\_max := fo\_max + Media(equipo[i]) \times Potencial(equipo[i]), fo\_min := fo\_min +$
+\State \tabto{81} $Valor(equipo[i]) \times Edad(equipo[i]), i := i + 1 \  $
+\State \tabto{25} $\textbf{od}$
+\State \tabto{25} $i, QuimParc, Cant\_Relaciones := 0$
+\State \tabto{25} $\{invariant: 0 \leq QuimicaParc\}$
+\State \tabto{25} $\{bound: N-2\}$
+\State \tabto{25} $\textbf{do}\ i < N-1 \rightarrow j := 0, $
+\State \tabto{75} $\{bound: N-2\}$
+\State \tabto{75} $\textbf{do}\ j < N-1 \rightarrow$
+\State \tabto{127} $\textbf{if}\ quimica[i][j] \neq -1 \rightarrow index := quimica[i][j], Cant\_Relaciones := $
+\State \tabto{232} $Cant\_Relaciones + 1, $
+\State \tabto{204} $\textbf{if}\ Nacionalidad(equipo[i]) = Nacionalidad(equipo[index]) \ \land $
+\State \tabto{214} $Club(equipo[i]) = Club(equipo[index])\rightarrow QuimParc := $
+\State \tabto{214} $QuimParc +200$
+\State \tabto{207.5} $\tikz \draw (0,0) rectangle (0.1,0.25); \ Nacionalidad(equipo[i]) = Nacionalidad(equipo[index]) \ \lor $
+\State \tabto{214} $Club(equipo[i]) = Club(equipo[index])\rightarrow QuimParc := $
+\State \tabto{214} $QuimParc +100$
+\State \tabto{207.5} $\tikz \draw (0,0) rectangle (0.1,0.25); \ \textbf{True} \ \rightarrow QuimParc := QuimParc +65$
+\State \tabto{204} $\textbf{fi}$
+\State \tabto{133.5} $\tikz \draw (0,0) rectangle (0.1,0.25); \ quimica[i][j] = -1 \ \rightarrow j := N-1$
+\State \tabto{127} $\textbf{fi}, \ j := j + 1$
+\State \tabto{77} $\textbf{od}, \ i := i + 1$
+\State \tabto{25} $\textbf{od}$
+\State \tabto{25} $\{postcondition: 65 \leq QuimicaParc\}$
+\State \tabto{25} $QuimicaParc := QuimicaParc \div (Cant\_Relaciones \times 100)$
+\State \tabto{25} $\textbf{if} \ QuimcaParc > 1 \rightarrow QuimParc := 1 \ \textbf{fi}$
+\State \tabto{25} $fitness := (fo\_max \times QuimicaParc) \div (fo\_min \times PER\_MIN)$
+\State $\{Post: fitness > 0\}$
+\State
+\State Otra forma de entenderlo es:
+\State \textbf{G}{$: (\boldsymbol{\forall} \ i : 1 \leq i < n : Posicion(equipo[i]) \neq "GK" )$}
+\State \textbf{Q}{$: \{N = 11 \land equipo \neq \emptyset \ \land \ posiciones \neq \emptyset \ \land \ quimica \neq \emptyset \ \land \ Posicion(equipo[0]) = "GK" \land \ \textbf{G} \}$}
+\State \textbf{R}{$: \{fitness > 0\}$}
+
+\State $\textbf{Q} \implies wp(HallarFitness, \textbf{R})$
+
+\end{document}

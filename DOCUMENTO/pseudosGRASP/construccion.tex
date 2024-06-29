@@ -1,0 +1,70 @@
+\documentclass{article}
+% Paquetes adicionales
+\usepackage[utf8]{inputenc} % Codificación de caracteres
+\usepackage{amsmath} % Paquete para matemáticas
+\usepackage{graphicx} % Para incluir gráficos
+\usepackage{hyperref} % Para hipervínculos
+\usepackage[spanish]{babel}
+\usepackage{tabularx} % Paquete para tablas ajustables
+\usepackage{float} % Paquete para la opción H en tablas y figuras
+\usepackage[a4,top=2cm,bottom=2cm,left=1cm,right=1cm]{geometry}
+\usepackage{algorithm} % Paquete para algoritmos
+\usepackage{algpseudocode} % Paquete para pseudocódigo
+\usepackage{titlesec} % Paquete para ajustar espacios de secciones
+% Configuración de márgenes
+
+% Ajuste del espacio entre columnas
+% Ajuste del espacio entre columnas
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0.2\baselineskip}
+%Documento
+\begin{document}
+\floatname{algorithm}{Metaheurístico GRASP}
+\renewcommand{\thealgorithm}{}
+\begin{algorithm}
+    \caption{Construcción de la población inicial}
+    \begin{algorithmic}[1]
+        \Procedure{Construccion}{MediaDePosicion, candidato, n, presupuesto, posiciones, chem\_pos}
+            \State $fitness \gets 0$
+            \State $borrados \gets$ lista vacía
+            
+            \Comment{Análisis exclusivo de arqueros}
+            \While{true}
+                \State $beta \gets Mejor(MediaDePosicion["GK"])$
+                \State $tau \gets 0$
+                \State $maxrcl \gets beta - ALPHA \times (beta - tau)$
+                \State $indmax \gets beta - maxrcl$
+                \State $inda \gets$ (si $indmax > 0$) ? aleatorio \% $indmax$ : $0$
+                \State $inda \gets inda + maxrcl$
+                \State $JugadorActual \gets MediaDePosicion[posiciones[0]]$
+                \If{$presupuesto \geq \Call{Valor}{JugadorActual}$}
+                    \State $presupuesto \gets presupuesto - \Call{Valor}{JugadorActual}$
+                    \State $candidato[0] \gets JugadorActual$
+                    \State $fitness \gets fitness + \Call{Fitness}{JugadorActual}$
+                    \State \textbf{break}
+                \EndIf
+            \EndWhile
+            \State
+            \For{$i \gets 1$ to $N\_PLAYERS - 1$}
+                \State $beta \gets Mejor(MediaDePosicion[Posiciones[i]])$
+                \State $tau \gets 0$
+                \State $maxrcl \gets beta - ALPHA \times (beta - tau)$
+                \State $indmax \gets beta - maxrcl$
+                \State $inda \gets$ (si $indmax > 0$) ? aleatorio \% $indmax$ : $0$
+                \State $inda \gets inda + maxrcl$
+                \State $JugadorActual \gets MediaDePosicion[posiciones[i]]$
+                \If{$presupuesto \geq \Call{Valor}{JugadorActual} \land 
+                    Posicion(MediaDePosicion[Posiciones[i]]) \neq "GK"$}
+                    \State $presupuesto \gets presupuesto - \Call{Valor}{JugadorActual}$
+                    \State $candidato[i] \gets JugadorActual$
+
+                    \State $fitness \gets fitness + \Call{Fitness}{JugadorActual}$
+                \Else
+                    \State $i \gets i - 1$ \Comment{Tiene que volver a analizar la posición}
+                \EndIf
+                \State \Call{Borrar}{$JugadorSeleccionado$}
+            \EndFor
+            \State \Return $fitness$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{document}

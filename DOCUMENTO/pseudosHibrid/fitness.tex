@@ -1,0 +1,66 @@
+\documentclass{article}
+% Paquetes adicionales
+\usepackage[utf8]{inputenc} % Codificación de caracteres
+\usepackage{amsmath} % Paquete para matemáticas
+\usepackage{graphicx} % Para incluir gráficos
+\usepackage{hyperref} % Para hipervínculos
+\usepackage[spanish]{babel}
+\usepackage{tabularx} % Paquete para tablas ajustables
+\usepackage{float} % Paquete para la opción H en tablas y figuras
+\usepackage[a4,top=2cm,bottom=2cm,left=1cm,right=1cm]{geometry}
+\usepackage{algorithm} % Paquete para algoritmos
+\usepackage{algpseudocode} % Paquete para pseudocódigo
+\usepackage{titlesec} % Paquete para ajustar espacios de secciones
+% Configuración de márgenes
+% Ajuste del espacio entre columnas
+% Ajuste del espacio entre columnas
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0.2\baselineskip}
+%Documento
+\begin{document}
+\floatname{algorithm}{FitnessIndividuo}
+\renewcommand{\thealgorithm}{}
+\begin{algorithm}
+    \caption{Algoritmo para encontrar el mejor equipo en el videojuego FIFA 19} 
+    \begin{algorithmic}[1]
+        \Procedure{FitnessIndividuo}{$equipo, posiciones, quimica$} \Comment{Halla el fitness de todo el equipo}
+            \State $fo\_max \gets \Call{Media}{equipo[0]} * \Call{Potencial}{equipo[0]}$
+            \State $fo\_min \gets \Call{Valor}{equipo[0]} * \Call{Edad}{equipo[0]}$
+            \State $i \gets 1$
+            \While{$i < N\_PLAYERS$}
+                \State $fo\_max \gets fo\_max + \Call{MediaPosicion}{equipo[i]} * \Call{Potencial}{equipo[i]}$
+                \State $fo\_min \gets fo\_min + \Call{Valor}{equipo[i]} * \Call{Edad}{equipo[i]}$
+                \State $i = i+1$
+            \EndWhile
+            \State $i \gets 0$
+            \State $QuimParcial \gets 0$
+            \While{$i < N\_CHEM$}
+                \State $j \gets 0$
+                \While{$j < N\_CHEM$}
+                    \If{$quimica[i][j] \neq -1 $}
+                        \State $index \gets quimica[i][j]$
+                        \State $Cant\_Relaciones \gets Cant\_Relaciones + 1$
+                            \If{$\Call{Nacionalidad}{equipo[i]} = \Call{Nacionalidad}{equipo[index]} \land \Call{Club}{equipo[i]} = \Call{Club}{equipo[index]}$}
+                                \State $QuimParcial \gets QuimParcial + 200$
+                            \Else 
+                                \If{$\Call{Nacionalidad}{equipo[i]} = \Call{Nacionalidad}{equipo[index]} \lor \Call{Club}{equipo[i]} = \Call{Club}{equipo[index]}$}
+                                    \State $QuimParcial \gets QuimParcial + 100$
+                                \Else
+                                    \State $QuimParcial \gets QuimParcial + 60$
+                            \EndIf
+                        \EndIf
+                    \Else
+                    \State \textbf{break }
+                    \EndIf
+                    \State $j = j+1$
+                \EndWhile
+                \State $i = i+1$
+            \EndWhile
+            \State $QuimParcial \gets QuimParcial \div (Cant\_Relaciones \times 100)$
+            \If{$QuimParcial > 1$}
+            \State $QuimParcial \gets 1$
+            \EndIf
+            \State \textbf{return }{$(fo\_max \times QuimParcial) \div (fo\_min \times PER\_MIN)$}
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{document}
